@@ -1,0 +1,34 @@
+name: Node.js CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code from the repo
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x" # Specify the version of Node.js you're using
+
+      # Step 3: Install project dependencies (npm install)
+      - name: Install dependencies
+        run: make install
+
+      # Step 4: Run the app with the make command and sleep to allow it to start
+      - name: Run the app
+        run: |
+          make run &
+          sleep 10  # Let the app start for 10 seconds
